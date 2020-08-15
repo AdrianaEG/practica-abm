@@ -1,41 +1,65 @@
-const fs = require('fs');
-const path = require('path');
+const groupsModel = require('../database/groupsModel');
 
 module.exports = {
     index: (req, res) => {
         // Me traigo todos los grupos
-
-        res.render('groups/index',  {});
+        //Microdesafío
+        //1. Leer archivo JSON 
+        //2. convertir a formato JavaScript 
+        //3. Enviar los grupos a la vista
+        let groups = groupsModel.readFile();
+        
+        res.render('groups/index',  {groups});
     },
     create: (req, res) => {
         res.render('groups/create');
     },
     store: (req, res) => {
-        // creo el grupo con los datos del formulario
+        //Microdesafío
+        // 1. creo el grupo con los datos del formulario
+        // 2. Leer todos los grupos
+        // 3. agrego el nuevo grupo a los existentes
+        // 4. guardado el nuevo listado en el archivo JSON
 
-        // agrego el nuevo grupo a los existentes
+        let newGroup = {
+            name : req.body.name,
+            description: req.body.description,
+            repository: req.body.repository,
+            image: null
+        }
 
-        // guardado el nuevo listado en el archivo JSON
-
-        res.redirect('/groups')
+        let groupId = groupsModel.create(newGroup);
+        
+        res.redirect('/groups/' + groupId);//Me lleva al detalle del grupo recién creado.
     },
     edit: (req, res) => {
-        // creo el grupo con los datos del formulario
-
-        // cambio el grupo en el listado
-
-        // guardado el nuevo listado en el archivo JSON
-
-        res.redirect('/groups')
+        let group = groupsModel.find(req.params.id)
+        res.render('groups/edit', {group});
     },
     update: (req, res) => {
-        res.send(req.body);
+        let group = {
+            id : req.params.id,
+            name: req.body.name,
+            description: req.body.description,
+            repository: req.body.repository,
+            image: null
+        }
+        let groupId = groupsModel.update(group);
+        
+        res.redirect('/groups/' + groupId);//Me lleva al detalle del grupo recién editado.
     },
     show: (req, res) => {
 
-        // Busco el grupo
+        //Busco el grupo
+        //Microdesafío
+        //1. Leer todos los grupos
+        //2. Obtener aquel que tiene el mismo id de la ruta
+        //3. Enviarlo a la vista
+        //let groups = readFile();
 
-        res.render('groups/detail', {});
+        let group = groupsModel.find(req.params.id)
+
+        res.render('groups/detail', {group});
     },
     destroy: (req, res) => {
 
