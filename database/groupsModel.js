@@ -64,19 +64,24 @@ let groupsModel = {
         })
 
         this.writeFile(updateRows);
-        console.log(row.id)
+       
         return row.id;
     },
     delete(id){
         
-        let rows = this.readFile();
+        /*let rows = this.readFile();
         rows.splice((id-1), (1));//Elimino el elemento del array
         let aux = 1;//Les reasigno un id
         rows.forEach(row => {
             row.id = aux;
             aux++;
         });
-        this.writeFile(rows);//Reescribo el json
+        this.writeFile(rows);//Reescribo el json*/
+        let rows = this.readFile();
+        let updateRows = rows.filter(oneRow=>{
+            return oneRow.id != id;
+        });
+        this.writeFile(updateRows);
     }
 }
 

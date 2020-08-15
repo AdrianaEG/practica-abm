@@ -198,7 +198,7 @@ select { width: 100%; }
         border-radius: var(--default-radius) 0 0 var(--default-radius);
     }
 
-    .card-left figure {
+    .card-left figure, figure {
         height: 96px;
         width: 96px;
         margin: 0;
@@ -209,7 +209,7 @@ select { width: 100%; }
         background-color: white;
     }
 
-    .card-left figure img {
+    .card-left figure img, figure img{
         width: 100%;
     }
 
