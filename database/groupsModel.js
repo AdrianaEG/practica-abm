@@ -34,31 +34,25 @@ let groupsModel = {
         let rows = this.readFile();
         return rows.find(row=> row.id == id);
     },
-    findByField(field, value){//campo valor... Buscador que se utiliza en el search
-        //Microdesafío
-        //1. Leer el archivo
-        //2. Buscar por campo y valor
-        //3. Retornar los resultados
+    findByField(value){
+        console.log(value);
+        let rows = this.readFile();
+        let rowsSearch = rows.filter(row =>{
+            return row.name.includes(value);
+        });
+        console.log(rowsSearch)
+        return rowsSearch;
+
     },
-    create(row){//row serían los datos
-        //Microdesafío
-        //1. Leer el archivo
-        //2. Generar un nuevo id
-        //3. Agregar el registro 
-        //4. Guardar los cambios
+    create(row){
         let rows = this.readFile();
         row.id = this.nextId();
         rows.push(row);
         this.writeFile(rows);
-
         return row.id;
     },
     update(row){
-        //Microdesafío
-        //1. Leer el archivo 
-        //2. Modificar el registro en cuestión
-        //3. Guardar los cambios
-        //4 . devolver el id modificado
+        
         let rows = this.readFile();
         let updateRows = rows.map(oneRow=>{
             if(oneRow.id == row.id){
@@ -74,10 +68,15 @@ let groupsModel = {
         return row.id;
     },
     delete(id){
-        //Microdesafío
-        //1. Leer el archivo
-        //2. Filtrar el registro en cuestión
-        //3. Guardar los cambios
+        
+        let rows = this.readFile();
+        rows.splice((id-1), (1));//Elimino el elemento del array
+        let aux = 1;//Les reasigno un id
+        rows.forEach(row => {
+            row.id = aux;
+            aux++;
+        });
+        this.writeFile(rows);//Reescribo el json
     }
 }
 
