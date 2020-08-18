@@ -1,6 +1,13 @@
 const express = require('express');
 const router = express.Router();
 const controller = require('../controllers/groupsController');
+
+//Middleware
+const m1 = require('../middlewares/m1');
+const m2 = require('../middlewares/m2');
+const m3 = require('../middlewares/m3');
+
+
 const path = require('path');
 const multer = require('multer');
 const storage = multer.diskStorage({
@@ -10,10 +17,18 @@ const storage = multer.diskStorage({
     },
 });
 
+
 const upload = multer({storage});
 
+//middleware
+//router.use(m1);
+//router.use(m2);
+//router.use(m3);
+// en este caso anterior los pasa a todas las rutas
+//En el siguiente solo lo pasamos a la ruta en la que lo necesitamos... 
+
 // Todos los grupos
-router.get('/', controller.index);
+router.get('/', [m1, m2, m3], controller.index);
 
 // Formulario de búsqueda
 router.get('/search', controller.search);
