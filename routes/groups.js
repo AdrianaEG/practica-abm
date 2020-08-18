@@ -11,6 +11,9 @@ const maintenanceMode = require('../middlewares/maintenance');// a la ruta que s
 //Por ejemplo: Probar que pasa si lo pongo en la ruta de crear 
 //router.get('/create', maintenanceMode,controller.create);
 
+//Validación de grupos
+const validate = require('../validators/groupsValidators');
+
 const path = require('path');
 const multer = require('multer');
 const storage = multer.diskStorage({
@@ -34,13 +37,13 @@ const upload = multer({storage});
 router.get('/', [m1, m2, m3], controller.index);
 
 // Formulario de búsqueda
-router.get('/search', controller.search);
+router.get('/search', validate.search,controller.search);
 
 // Formulario de creación
 router.get('/create', controller.create);
 
 // Procesamiento del formulario de creación
-router.post('/', upload.single('image'), controller.store);
+router.post('/', upload.single('image'), validate.createForm, controller.store);
 
 // Formulario de edición
 router.get('/:id/edit',controller.edit);

@@ -2,6 +2,7 @@ const groupsModel = require('../database/groupsModel');
 //const { delete } = require('../database/groupsModel');
 const fs = require('fs');
 const path = require('path');
+const {validationResult} = require('express-validator');
 
 module.exports = {
     index: (req, res) => {
@@ -12,27 +13,34 @@ module.exports = {
         res.render('groups/create');
     },
     store: (req, res) => {
-        
-        let newGroup = req.body;
+        let errors = validationResult(req);//analiza el request
+        //return res.send(errors.mapped());//Me va a mostrar el primer error que haya
+        if (errors.isEmpty()){
+            let newGroup = req.body;
 
-        console.log(req.file);
-        newGroup.image = 'default.jpg';
-        if(req.file){
-            newGroup.image = req.file.filename;
+            console.log(req.file);
+            newGroup.image = 'default.jpg';
+            if(req.file){
+                newGroup.image = req.file.filename;
+            }
+            else if(req.body.oldImage){
+                newGroup.image = req.file.filename;
+            }
+            delete newGroup.oldImage;
+            
+            /*{
+                name : req.body.name,
+                description: req.body.description,
+                repository: req.body.repository,
+                image: null
+            }*/
+            let groupId = groupsModel.create(newGroup);
+            res.redirect('/groups/' + groupId);//Me lleva al detalle del grupo recién creado.
         }
-        else if(req.body.oldImage){
-            newGroup.image = req.file.filename;
+        else{
+            //res.render('groups/create');
+            res.send(errors.mapped())
         }
-        delete newGroup.oldImage;
-        
-        /*{
-            name : req.body.name,
-            description: req.body.description,
-            repository: req.body.repository,
-            image: null
-        }*/
-        let groupId = groupsModel.create(newGroup);
-        res.redirect('/groups/' + groupId);//Me lleva al detalle del grupo recién creado.
     },
     edit: (req, res) => {
         let group = groupsModel.find(req.params.id)
@@ -76,6 +84,7 @@ module.exports = {
         res.redirect('/groups')
     },
     search: (req, res) => {
+
         let search = req.query.search;
         let groups = groupsModel.findByField(search);
         console.log(groups);
