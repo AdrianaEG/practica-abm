@@ -38,8 +38,7 @@ module.exports = {
             res.redirect('/groups/' + groupId);//Me lleva al detalle del grupo recién creado.
         }
         else{
-            //res.render('groups/create');
-            res.send(errors.mapped())
+            res.render('groups/create', {errors: errors.mapped(), group: req.body});
         }
     },
     edit: (req, res) => {
