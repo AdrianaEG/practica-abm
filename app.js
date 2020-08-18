@@ -4,6 +4,7 @@ const methodOverride = require('method-override');
 
 //Importo el middleware
 //const logMiddleware = require('./middlewares/log');
+//const maintenanceMode = require('./middlewares/maintenance');
 
 
 // Configuración
@@ -11,11 +12,16 @@ const methodOverride = require('method-override');
 // Las vistas están en la carpeta views
 app.set('view engine', 'ejs');
 
+
 // Template Engines
 app.use(express.static('public'));
 
 //Implemento el middleware
 //app.use(logMiddleware);
+
+//middleware
+//app.use(maintenanceMode);
+
 
 // Formularios
 app.use(express.urlencoded({ extended: false }));//middleware que arma el objeto body

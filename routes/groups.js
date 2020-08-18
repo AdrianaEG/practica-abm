@@ -7,6 +7,9 @@ const m1 = require('../middlewares/m1');
 const m2 = require('../middlewares/m2');
 const m3 = require('../middlewares/m3');
 
+const maintenanceMode = require('../middlewares/maintenance');// a la ruta que se lo pase la pone  en mantenimiento
+//Por ejemplo: Probar que pasa si lo pongo en la ruta de crear 
+//router.get('/create', maintenanceMode,controller.create);
 
 const path = require('path');
 const multer = require('multer');
@@ -40,7 +43,7 @@ router.get('/create', controller.create);
 router.post('/', upload.single('image'), controller.store);
 
 // Formulario de edición
-router.get('/:id/edit', controller.edit);
+router.get('/:id/edit',controller.edit);
 
 // Procesamiento del formulario de edicion
 router.put('/:id', upload.single('image'), controller.update);
